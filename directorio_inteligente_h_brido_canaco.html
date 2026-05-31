@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directorio Inteligente Híbrido | CANACO Mérida</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#fdf2f8',
+                            100: '#fce7f3',
+                            500: '#ec4899', // Rosa Oficial del Comité
+                            600: '#db2777',
+                            700: '#be185d',
+                            900: '#831843',
+                        },
+                        canaco: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#1e3a8a', // Azul Oficial CANACO
+                            600: '#1e40af',
+                            700: '#1d4ed8',
+                            900: '#172554',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            /* Colores dinámicos por default: Modo CANACO (Azul) */
+            --theme-brand-500: #1e3a8a;
+            --theme-brand-600: #1d4ed8;
+            --theme-brand-700: #172554;
+            --theme-brand-glow: rgba(30, 58, 138, 0.08);
+            --theme-brand-badge-bg: #dbeafe;
+            --theme-brand-badge-text: #1e3a8a;
+            --theme-accent-gradient: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            --theme-shadow-glow: rgba(30, 58, 138, 0.15);
+        }
+
+        /* Variables para el Modo Comité de Mujeres (Rosa) */
+        .theme-comite-mujeres {
+            --theme-brand-500: #ec4899;
+            --theme-brand-600: #db2777;
+            --theme-brand-700: #831843;
+            --theme-brand-glow: rgba(236, 72, 153, 0.08);
+            --theme-brand-badge-bg: #fce7f3;
+            --theme-brand-badge-text: #be185d;
+            --theme-accent-gradient: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);
+            --theme-shadow-glow: rgba(236, 72, 153, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Clases de utilidad vinculadas a variables dinámicas CSS */
+        .dynamic-text-brand { color: var(--theme-brand-500); }
+        .dynamic-bg-brand { background-color: var(--theme-brand-500); }
+        .dynamic-bg-brand-hover:hover { background-color: var(--theme-brand-600); }
+        .dynamic-border-brand { border-color: var(--theme-brand-500); }
+        .dynamic-bg-glow { background-color: var(--theme-brand-glow); }
+        .dynamic-bg-badge { background-color: var(--theme-brand-badge-bg); }
+        .dynamic-text-badge { color: var(--theme-brand-badge-text); }
+        .dynamic-gradient { background: var(--theme-accent-gradient); }
+
+        /* Estilo Glassmorphic Premium */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: background 0.4s, border 0.4s;
+        }
+
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* 3D Tilt Card Container */
+        .business-card-container {
+            perspective: 1200px;
+        }
+
+        .business-card {
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Animación Holográfica para Patrocinadores Premium */
+        .hologram-border {
+            position: relative;
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #ec4899, #1e3a8a);
+            background-size: 400% 400%;
+            animation: hologram-flow 8s ease infinite;
+        }
+
+        .theme-comite-mujeres .hologram-border {
+            background: linear-gradient(90deg, #ec4899, #8b5cf6, #3b82f6, #ec4899);
+            background-size: 400% 400%;
+        }
+
+        @keyframes hologram-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Transiciones de Modo */
+        .theme-transition {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Scrollbar Personalizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+    </style>
+</head>
+<body id="mainBody" class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-300">
+
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/50 dark:border-slate-800/50 theme-transition">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Identidad Visual / Logo -->
+                <div class="flex items-center gap-3">
+                    <div id="navLogoContainer" class="flex items-center justify-center w-12 h-12 rounded-xl text-white shadow-lg dynamic-gradient theme-transition">
+                        <i id="navLogoIcon" class="fa-solid fa-building text-xl"></i>
+                    </div>
+                    <div>
+                        <span id="navSubtitle" class="text-[10px] font-bold tracking-widest uppercase block text-slate-400">Directorio Oficial</span>
+                        <h1 id="navTitle" class="text-base font-extrabold tracking-tight text-slate-900 dark:text-white leading-none theme-transition">CANACO SERVYTUR</h1>
+                    </div>
+                </div>
+
+                <!-- SWITCH MAESTRO DE ENTORNO (HÍBRIDO) -->
+                <div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200/40 dark:border-slate-800/40 shadow-inner">
+                    <button onclick="setDirectorioMode('general')" id="modeBtnGeneral" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-md">
+                        <i class="fa-solid fa-globe"></i> Directorio General
+                    </button>
+                    <button onclick="setDirectorioMode('mujeres')" id="modeBtnMujeres" class="px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-venus"></i> Comité de Mujeres 🌸
+                    </button>
+                </div>
+
+                <!-- Opciones Rápidas de Navegación -->
+                <div class="flex items-center gap-3">
+                    <!-- Toggle Oscuro/Claro -->
+                    <button id="themeToggleBtn" onclick="toggleDarkMode()" class="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 transition-all border border-slate-200/40 dark:border-slate-800/40">
+                        <i id="themeToggleIcon" class="fa-solid fa-moon"></i>
+                    </button>
+
+                    <!-- Enlace de Afiliación Oficial -->
+                    <a id="navRegisterBtn" href="https://www.canacomerida.com" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center gap-2 text-white font-semibold text-xs px-5 py-2.5 rounded-xl shadow-md transition-all transform active:scale-95 dynamic-gradient">
+                        <span>Afiliarse a CANACO</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </a>
+
+                    <!-- Menú Hamburguesa Mobile -->
+                    <button onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+                        <i class="fa-solid fa-bars text-lg" id="mobileMenuIcon"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Menú de Dispositivos Móviles -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-200/50 dark:border-slate-800/50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg px-4 py-6 space-y-4 shadow-xl">
+            <!-- Switch Móvil -->
+            <div class="grid grid-cols-2 bg-slate-100 dark:bg-slate-900 p-1.5 rounded-xl">
+                <button onclick="setDirectorioMode('general'); toggleMobileMenu();" id="mobModeBtnGen" class="py-2.5 rounded-lg text-xs font-bold text-center bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-sm">
+                    Gral. CANACO
+                </button>
+                <button onclick="setDirectorioMode('mujeres'); toggleMobileMenu();" id="mobModeBtnMuj" class="py-2.5 rounded-lg text-xs font-bold text-center text-slate-500 dark:text-slate-400">
+                    Comité Mujeres 🌸
+                </button>
+            </div>
+            <hr class="border-slate-100 dark:border-slate-800">
+            <a href="#directorio" onclick="toggleMobileMenu()" class="block text-sm font-semibold text-slate-700 dark:text-slate-200 py-2"><i class="fa-solid fa-address-book text-slate-400 w-6"></i> Directorio</a>
+            <a href="#asistente-ia" onclick="toggleMobileMenu()" class="block text-sm font-semibold text-slate-700 dark:text-slate-200 py-2"><i class="fa-solid fa-sparkles text-slate-400 w-6"></i> Matchmaker IA</a>
+            <a href="#patrocinadores" onclick="toggleMobileMenu()" class="block text-sm font-semibold text-slate-700 dark:text-slate-200 py-2"><i class="fa-solid fa-award text-slate-400 w-6"></i> Patrocinadores</a>
+            <a href="#simulador" onclick="toggleMobileMenu()" class="block text-sm font-semibold text-slate-700 dark:text-slate-200 py-2"><i class="fa-solid fa-wand-magic-sparkles text-slate-400 w-6"></i> Mi Tarjeta</a>
+        </div>
+    </header>
+
+    <!-- Hero / Portada Principal -->
+    <section class="relative overflow-hidden pt-12 pb-20 md:py-24 theme-transition">
+        <!-- Fondos Ambientales Degradados -->
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-full -z-10 pointer-events-none">
+            <div id="ambientGlow1" class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full dynamic-bg-glow blur-[120px] theme-transition"></div>
+            <div id="ambientGlow2" class="absolute bottom-[10%] right-[-15%] w-[600px] h-[600px] rounded-full bg-indigo-500/10 dark:bg-indigo-900/10 blur-[130px]"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <!-- Badge Dinámico -->
+            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold mb-8">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full dynamic-bg-brand opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 dynamic-bg-brand"></span>
+                </span>
+                <span id="heroBadgeText">Ecosistema de Vinculación y Negocios en Yucatán</span>
+            </div>
+
+            <!-- Título Principal -->
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto">
+                <span id="heroTitlePrefix">Directorio de Negocios y</span> <span id="heroTitleAccent" class="bg-gradient-to-r from-indigo-600 via-indigo-500 to-sky-600 bg-clip-text text-transparent">Networking Inteligente</span>
+            </h1>
+
+            <p id="heroSubtitle" class="mt-6 text-lg text-slate-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Busca, conecta e intercambia valor con las empresas, industrias y líderes comerciales más importantes y certificadas del estado.
+            </p>
+
+            <!-- Buscador Dinámico en el Hero -->
+            <div class="mt-10 max-w-2xl mx-auto">
+                <div class="relative p-1.5 rounded-2xl bg-white dark:bg-slate-900 shadow-xl border border-slate-200 dark:border-slate-800/80 flex flex-col sm:flex-row gap-2">
+                    <div class="flex-1 flex items-center gap-3 px-3">
+                        <i class="fa-solid fa-magnifying-glass text-slate-400 dark:text-slate-500 text-lg"></i>
+                        <input type="text" id="heroSearchInput" onkeyup="syncAndSearch(this.value)" placeholder="Buscar por negocio, servicio o palabra clave..." class="w-full bg-transparent border-none text-slate-800 dark:text-white placeholder-slate-400 focus:ring-0 focus:outline-none text-base">
+                    </div>
+                    <a href="#directorio" class="dynamic-bg-brand dynamic-bg-brand-hover text-white px-6 py-3 rounded-xl font-bold text-sm transition-all text-center flex items-center justify-center gap-2">
+                        <span>Ver Directorio</span>
+                        <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección del Asistente IA Matchmaker -->
+    <section id="asistente-ia" class="py-16 bg-gradient-to-b from-slate-100/50 via-white to-slate-100/50 dark:from-slate-950 dark:via-slate-900/40 dark:to-slate-950 border-t border-slate-200/40 dark:border-slate-800/40 relative">
+        <div class="absolute inset-0 bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.02] dark:opacity-[0.04] pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-10">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-indigo-700 bg-indigo-50 dark:bg-indigo-950/50 dark:text-indigo-300 border border-indigo-200/40">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Inteligencia Artificial
+                </span>
+                <h2 id="iaSectionTitle" class="text-3xl font-extrabold text-slate-900 dark:text-white mt-3">Matchmaker de Negocios Inteligente</h2>
+                <p id="iaSectionDesc" class="mt-2 text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto">
+                    ¿No sabes qué empresa necesitas? Escribe tu requerimiento (ej: "busco banquetes en Mérida que ofrezcan facturación") y Gemini buscará y te sugerirá las mejores opciones del directorio.
+                </p>
+            </div>
+
+            <!-- Caja de Chat de Gemini Matchmaker -->
+            <div class="bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-2xl rounded-3xl overflow-hidden">
+                <div class="p-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div id="chatIconContainer" class="w-10 h-10 rounded-xl dynamic-gradient flex items-center justify-center text-white shadow-lg shadow-indigo-500/10">
+                            <i class="fa-solid fa-sparkles text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 block">Asistente Virtual</span>
+                            <h3 id="chatTitle" class="text-sm font-extrabold text-slate-900 dark:text-white leading-none">Vinculación Comercial CANACO</h3>
+                        </div>
+                    </div>
+                    <!-- Estado de la API: "Gemini 3.1 Activo" -->
+                    <div class="flex items-center gap-2">
+                        <span id="apiStatusBadge" class="text-[10px] font-extrabold text-blue-600 bg-blue-50 dark:bg-blue-950/30 border border-blue-100/30 dark:border-blue-900/30 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                            <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> Gemini 3.1 Activo
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Historial del Chat -->
+                <div class="p-6 space-y-4 max-h-96 overflow-y-auto" id="chatHistoryContainer">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-500 flex-shrink-0 mt-0.5">
+                            <i class="fa-solid fa-robot text-sm"></i>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl rounded-tl-none max-w-[85%]">
+                            <p id="chatWelcomeMsg" class="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                                ¡Hola! Soy tu **Asistente Matchmaker**. Escribe qué servicio o alianza de negocios buscas en Mérida, y encontraré al socio o socia ideal del directorio para ti.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input del Chat -->
+                <div class="p-4 bg-slate-50/50 dark:bg-slate-900/50 border-t border-slate-100 dark:border-slate-800">
+                    <div class="flex gap-2">
+                        <input type="text" id="aiQueryInput" onkeydown="if(event.key === 'Enter') sendMatchmakerRequest()" placeholder="Escribe tu requerimiento (ej: 'Necesito banquetes y abogadas corporativas'...)" class="flex-1 px-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 text-sm text-slate-800 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none focus:border-transparent transition-all">
+                        <button onclick="sendMatchmakerRequest()" id="aiSendBtn" class="bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-950 text-white font-bold text-sm px-6 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 flex-shrink-0 active:scale-95">
+                            <span>Buscar</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Directorio Principal -->
+    <section id="directorio" class="py-20 bg-slate-100/30 dark:bg-slate-900/20 border-y border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                <div>
+                    <h2 id="directoryTitle" class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Directorio Comercial General</h2>
+                    <p id="directoryDesc" class="mt-2 text-slate-500 dark:text-slate-400">Encuentra y conecta con las empresas de mayor prestigio y confianza en Yucatán.</p>
+                </div>
+                <!-- Buscador de Directorio -->
+                <div class="w-full md:w-96">
+                    <div class="relative">
+                        <input type="text" id="directorySearchInput" onkeyup="filterDirectory()" placeholder="Filtrar por palabra clave..." class="w-full pl-10 pr-4 py-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all shadow-sm">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtros por Categoría / Sectores -->
+            <div class="mb-10">
+                <div class="flex flex-wrap gap-2.5" id="categoryFilters">
+                    <button onclick="selectCategory('all')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm dynamic-bg-brand text-white" data-category="all">Todos los Sectores</button>
+                    <button onclick="selectCategory('Consultoría')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300" data-category="Consultoría">Consultoría y Servicios</button>
+                    <button onclick="selectCategory('Tecnología')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300" data-category="Tecnología">Tecnología e Innovación</button>
+                    <button onclick="selectCategory('Comercio')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300" data-category="Comercio">Comercio Minorista/Mayorista</button>
+                    <button onclick="selectCategory('Salud')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300" data-category="Salud">Salud y Bienestar</button>
+                    <button onclick="selectCategory('Gastronomía')" class="category-btn px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800 text-slate-600 dark:text-slate-300" data-category="Gastronomía">Alimentos y Gastronomía</button>
+                </div>
+            </div>
+
+            <!-- GRID DE TARJETAS 3D DINÁMICO -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="cardsGrid">
+                <!-- Se inyecta dinámicamente -->
+            </div>
+
+            <!-- No Results Placeholder -->
+            <div id="noResults" class="hidden text-center py-20">
+                <div class="text-slate-300 dark:text-slate-700 text-6xl mb-4">
+                    <i class="fa-regular fa-folder-open"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-700 dark:text-slate-300">No encontramos coincidencias</h3>
+                <p class="text-sm text-slate-500 mt-1">Intenta con otra palabra clave o sector comercial.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Drawer / Perfil de Empresa Expandido (Micro-sitio) -->
+    <div id="profileDrawer" class="fixed inset-0 z-50 overflow-hidden pointer-events-none" role="dialog" aria-modal="true">
+        <div id="drawerBackdrop" onclick="closeProfileDrawer()" class="absolute inset-0 bg-slate-950/40 backdrop-blur-sm transition-opacity duration-500 ease-in-out opacity-0 pointer-events-auto"></div>
+
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div id="drawerPanel" class="w-screen max-w-xl translate-x-full transition-transform duration-500 ease-in-out pointer-events-auto">
+                <div class="h-full flex flex-col bg-white dark:bg-slate-900 shadow-2xl overflow-y-auto relative border-l border-slate-200 dark:border-slate-800/80">
+                    
+                    <!-- Botón Cerrar Drawer -->
+                    <button onclick="closeProfileDrawer()" class="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+
+                    <!-- Banner de Portada del Drawer -->
+                    <div id="drawerBanner" class="relative h-48 dynamic-gradient overflow-hidden">
+                        <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                        <!-- Badge Tipo Patrocinio -->
+                        <span id="drawerBadge" class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-slate-900/80 backdrop-blur-md">
+                            Platinum
+                        </span>
+                    </div>
+
+                    <!-- Detalles del Negocio -->
+                    <div class="px-6 pb-8 relative -mt-12 flex-1">
+                        <!-- Logotipo -->
+                        <div class="w-24 h-24 rounded-2xl bg-white dark:bg-slate-800 p-2 shadow-xl border border-slate-200/50 dark:border-slate-700 mb-4 flex items-center justify-center overflow-hidden">
+                            <img id="drawerLogo" src="" alt="Logo" class="w-full h-full object-contain">
+                        </div>
+
+                        <!-- Título y Sector -->
+                        <div class="flex items-start justify-between gap-4 flex-wrap">
+                            <div>
+                                <h2 id="drawerCompName" class="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">Nombre de la Empresa</h2>
+                                <span id="drawerSector" class="inline-block mt-1.5 text-xs font-semibold px-2.5 py-1 rounded-md dynamic-bg-badge dynamic-text-badge">Sector</span>
+                            </div>
+                            <!-- Sello de Mujeres en el Drawer -->
+                            <div id="drawerWomenBadge" class="hidden">
+                                <span class="inline-flex items-center gap-1 bg-pink-100 dark:bg-pink-950/40 text-pink-600 dark:text-pink-400 font-bold text-[10px] px-2.5 py-1 rounded-full border border-pink-200/30">
+                                    <i class="fa-solid fa-venus"></i> Comité de Mujeres
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Descripción -->
+                        <div class="mt-6 border-t border-slate-100 dark:border-slate-800/80 pt-6">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">¿Quiénes somos?</h4>
+                            <p id="drawerDesc" class="mt-2 text-slate-600 dark:text-slate-300 leading-relaxed text-sm">Descripción comercial de la empresa.</p>
+                        </div>
+
+                        <!-- Contacto e Información Física -->
+                        <div class="mt-6 space-y-4 border-t border-slate-100 dark:border-slate-800/80 pt-6">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Contacto Directo</h4>
+                            
+                            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 dark:text-slate-500 block">Director (a) / Fundador (a)</span>
+                                    <span id="drawerFounder" class="text-sm font-semibold">Nombre del Representante</span>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-3 text-slate-600 dark:text-slate-300">
+                                <div class="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 flex-shrink-0">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs text-slate-400 dark:text-slate-500 block">Ubicación</span>
+                                    <span id="drawerLocation" class="text-sm font-semibold">Mérida, Yucatán</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Redes Sociales -->
+                        <div class="mt-6 border-t border-slate-100 dark:border-slate-800/80 pt-6">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">Conexión Digital</h4>
+                            <div class="flex gap-3" id="drawerSocials">
+                                <!-- Se inyecta dinámicamente -->
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Conversión / Botón WhatsApp Directo -->
+                    <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex flex-col gap-3">
+                        <a id="drawerWhatsAppBtn" href="#" target="_blank" class="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20 transform active:scale-[0.98] transition-all text-center">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                            <span>Conectar por WhatsApp</span>
+                        </a>
+                        <p class="text-[10px] text-center text-slate-400">Esta empresa cuenta con la certificación y afiliación activa de la CANACO Mérida.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección del Simulador Autoadministrable (Mi Tarjeta) -->
+    <section id="simulador" class="py-20 relative overflow-hidden bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-900/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest block mb-2">Simulador para Afiliadas</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Crea y Optimiza tu Tarjeta de Presentación</h2>
+                <p class="mt-3 text-slate-500 dark:text-slate-400 text-sm sm:text-base">Descubre cómo opera el sistema de actualización autoadministrable del directorio. Modifica los datos comerciales de tu negocio en vivo e impúlsalos usando Inteligencia Artificial.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start max-w-5xl mx-auto">
+                
+                <!-- Panel de Control del Simulador -->
+                <div class="p-8 rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 shadow-xl space-y-5">
+                    <h3 class="text-lg font-bold flex items-center gap-2 text-slate-950 dark:text-white">
+                        <i class="fa-solid fa-sliders text-indigo-500"></i> Panel de Datos
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Nombre de la Empresa</label>
+                            <input type="text" id="simName" oninput="updateSimulatedCard()" value="GastroSabores de Yucatán" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Director (a) / Fundador (a)</label>
+                            <input type="text" id="simFounder" oninput="updateSimulatedCard()" value="Patricia Cantón" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Sector Comercial</label>
+                            <select id="simSector" onchange="updateSimulatedCard()" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                                <option value="Consultoría">Consultoría y Servicios</option>
+                                <option value="Tecnología">Tecnología e Innovación</option>
+                                <option value="Comercio">Comercio Minorista/Mayorista</option>
+                                <option value="Salud">Salud y Bienestar</option>
+                                <option value="Gastronomía" selected>Alimentos y Gastronomía</option>
+                            </select>
+                        </div>
+                        <!-- Toggle de Comité de Mujeres -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">¿Liderado por Mujer?</label>
+                            <div class="flex items-center h-10">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="simIsWomenLed" onchange="updateSimulatedCard()" checked class="sr-only peer">
+                                    <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-pink-500"></div>
+                                    <span class="ml-3 text-xs font-semibold text-slate-500 dark:text-slate-400">Pertenece al Comité</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generador de Logos / Pitch -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Logo Demostración</label>
+                            <button onclick="generateMockLogo()" class="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-950 font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm hover:opacity-90">
+                                <i class="fa-solid fa-image"></i> Generar Logo Demo
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Optimización</label>
+                            <button onclick="optimizeMockPitch(event)" class="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-md shadow-indigo-500/15">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i> Pulir Pitch con IA
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase mb-1">Descripción de Servicios</label>
+                        <textarea id="simDesc" oninput="updateSimulatedCard()" rows="3" class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Describe brevemente tus servicios o negocio...">Ofrecemos banquetes corporativos y familiares de cocina tradicional de Yucatán con fusiones contemporáneas. Excelente presentación y facturación.</textarea>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                        <span class="text-xs text-slate-400">¿Eres socia activa? Guarda estos cambios</span>
+                        <button onclick="saveSimulatedCard()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all shadow-md shadow-indigo-500/10">Inyectar en Directorio</button>
+                    </div>
+
+                </div>
+
+                <!-- Vista Previa de Tarjeta Interactiva -->
+                <div class="flex flex-col items-center justify-center sticky top-24">
+                    <span class="text-xs font-semibold text-slate-400 mb-3"><i class="fa-regular fa-eye mr-1"></i> Vista Previa Digital en Vivo (Gira el cursor encima)</span>
+                    
+                    <div class="business-card-container w-full max-w-sm">
+                        <div id="simCard" class="business-card relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 shadow-xl w-full min-h-[250px] flex flex-col justify-between transition-all">
+                            
+                            <!-- Brillo sutil -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span id="simCardSector" class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Gastronomía</span>
+                                    
+                                    <span id="simCardWomenBadge" class="inline-flex items-center gap-1 bg-pink-50 dark:bg-pink-950/40 text-pink-500 dark:text-pink-400 font-bold text-[9px] px-2 py-0.5 rounded-full border border-pink-200/20">
+                                        <i class="fa-solid fa-venus"></i> Comité de Mujeres
+                                    </span>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div id="simCardLogoContainer" class="w-14 h-14 rounded-xl bg-slate-50 dark:bg-slate-800 p-1.5 border border-slate-200/50 dark:border-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                        <i id="simCardFallbackIcon" class="fa-solid fa-utensils text-slate-400 dark:text-slate-500 text-lg"></i>
+                                        <img id="simCardLogo" src="" alt="Logo" class="w-full h-full object-contain hidden">
+                                    </div>
+                                    <div>
+                                        <h3 id="simCardName" class="text-base font-extrabold text-slate-900 dark:text-white line-clamp-1">GastroSabores de Yucatán</h3>
+                                        <span class="text-xs text-slate-400">Mérida, Yucatán</span>
+                                    </div>
+                                </div>
+
+                                <p id="simCardDesc" class="mt-4 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                                    Ofrecemos banquetes corporativos y familiares de cocina tradicional de Yucatán con fusiones contemporáneas. Excelente presentación y facturación.
+                                </p>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80 mt-6 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Director (a) / Fundador (a)</span>
+                                    <span id="simCardFounder" class="text-xs font-semibold text-slate-700 dark:text-slate-300">Patricia Cantón</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-sm cursor-pointer hover:bg-emerald-500 hover:text-white transition-all">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </div>
+                                    <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Patrocinadores -->
+    <section id="patrocinadores" class="py-20 bg-slate-100/50 dark:bg-slate-900/30 border-t border-slate-200/40 dark:border-slate-800/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <span class="text-xs font-extrabold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest block mb-2">Presencia de Alto Nivel</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white">Patrocinadores Platinum CANACO</h2>
+                <p class="mt-3 text-slate-500 dark:text-slate-400">Impulsa tu negocio y posiciona tu marca ante los empresarios y tomadores de decisiones más influyentes de Yucatán.</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 justify-center">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/80 p-6 rounded-2xl flex flex-col justify-center items-center h-32 hover:scale-105 transition-all shadow-sm group cursor-pointer">
+                    <i class="fa-solid fa-building-columns text-slate-300 group-hover:text-indigo-500 text-2xl transition-colors mb-2"></i>
+                    <span class="text-slate-700 dark:text-slate-300 font-extrabold text-base tracking-tight text-center">Banca Yucatán</span>
+                    <span class="text-[9px] uppercase font-bold text-indigo-500 mt-1">Socio Financiero</span>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/80 p-6 rounded-2xl flex flex-col justify-center items-center h-32 hover:scale-105 transition-all shadow-sm group cursor-pointer">
+                    <i class="fa-solid fa-hospital-user text-slate-300 group-hover:text-pink-500 text-2xl transition-colors mb-2"></i>
+                    <span class="text-slate-700 dark:text-slate-300 font-extrabold text-base tracking-tight text-center">Clínicas Mérida</span>
+                    <span class="text-[9px] uppercase font-bold text-pink-500 mt-1">Salud Integral</span>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/80 p-6 rounded-2xl flex flex-col justify-center items-center h-32 hover:scale-105 transition-all shadow-sm group cursor-pointer">
+                    <i class="fa-solid fa-bolt-lightning text-slate-300 group-hover:text-emerald-500 text-2xl transition-colors mb-2"></i>
+                    <span class="text-slate-700 dark:text-slate-300 font-extrabold text-base tracking-tight text-center">EcoYuc Soluciones</span>
+                    <span class="text-[9px] uppercase font-bold text-emerald-500 mt-1">Energía Limpia</span>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/80 p-6 rounded-2xl flex flex-col justify-center items-center h-32 hover:scale-105 transition-all shadow-sm group cursor-pointer">
+                    <i class="fa-solid fa-graduation-cap text-slate-300 group-hover:text-violet-500 text-2xl transition-colors mb-2"></i>
+                    <span class="text-slate-700 dark:text-slate-300 font-extrabold text-base tracking-tight text-center">Cumbres Mid</span>
+                    <span class="text-[9px] uppercase font-bold text-violet-500 mt-1">Educación Superior</span>
+                </div>
+            </div>
+
+            <!-- Caja Informativa de Patrocinio -->
+            <div class="bg-gradient-to-tr from-indigo-900 to-indigo-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden mt-16 max-w-4xl mx-auto theme-transition" id="sponsorshipBox">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-indigo-200 block mb-2">Exposición Comercial de Alto Impacto</span>
+                        <h3 class="text-2xl md:text-3xl font-extrabold">Posiciona tu Marca en Nuestro Directorio</h3>
+                        <p class="mt-2 text-white/80 text-sm max-w-lg">Activa tu banner dinámico en el home, prioriza tus búsquedas o resalta la tarjeta de tu empresa con efectos de relieve y luz.</p>
+                    </div>
+                    <a href="mailto:comite.mujeres@canacomerida.com" class="inline-block bg-white text-indigo-950 font-extrabold px-8 py-4 rounded-xl shadow-lg hover:scale-105 transition-transform text-center flex-shrink-0 text-sm">
+                        Ver Planes de Patrocinio
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer / Pie de Página -->
+    <footer class="bg-slate-900 dark:bg-slate-950 text-slate-400 border-t border-slate-800/80 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div class="md:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-blue-600/10 text-blue-500 border border-blue-500/20">
+                            <i class="fa-solid fa-user-tie text-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-extrabold text-blue-500 dark:text-blue-400 tracking-tight leading-none">CANACO Servytur Mérida</h4>
+                        </div>
+                    </div>
+                    <p class="text-xs leading-relaxed max-w-sm text-slate-400">
+                        Una iniciativa de vinculación e intercambio empresarial híbrido para conectar el liderazgo de las mujeres empresarias y el ecosistema global de socios de la cámara.
+                    </p>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold text-xs uppercase tracking-wider mb-4">Navegación</h5>
+                    <ul class="space-y-2.5 text-xs">
+                        <li><a href="#directorio" class="hover:text-white transition-colors">Directorio de Socios</a></li>
+                        <li><a href="#asistente-ia" class="hover:text-white transition-colors">Asistente Matchmaker</a></li>
+                        <li><a href="#patrocinadores" class="hover:text-white transition-colors">Patrocinios Premium</a></li>
+                        <li><a href="https://www.canacomerida.com" target="_blank" class="hover:text-white transition-colors">Sitio Matriz CANACO</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h5 class="text-white font-bold text-xs uppercase tracking-wider mb-4">Canales de Contacto</h5>
+                    <div class="flex gap-3 mb-4">
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center justify-center text-sm"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center justify-center text-sm"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all flex items-center justify-center text-sm"><i class="fa-brands fa-linkedin-in"></i></a>
+                    </div>
+                    <span class="text-[10px] text-slate-500 block">Mérida, Yucatán, México.</span>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+                <p>&copy; 2026 CANACO Servytur Mérida. Todos los derechos reservados.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-slate-400">Aviso de Privacidad</a>
+                    <span>&middot;</span>
+                    <a href="#" class="hover:text-slate-400">Términos del Portal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Snackbar de Éxito -->
+    <div id="snackbar" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white text-xs font-semibold py-3.5 px-6 rounded-2xl shadow-xl transition-all duration-300 scale-90 opacity-0 pointer-events-none flex items-center gap-2">
+        <i class="fa-solid fa-circle-check text-emerald-400" id="snackbarIcon"></i>
+        <span id="snackbarText">Información actualizada con éxito</span>
+    </div>
+
+    <script>
+        // --- BASE DE DATOS HÍBRIDA DE SOCIOS (CON GÉNERO E IDENTIFICADOR DE COMITÉ) ---
+        const sociosCanaco = [
+            {
+                id: 1,
+                compName: "K'áan Arquitectura Sostenible",
+                founder: "Sofía Peniche",
+                sector: "Consultoría",
+                subsector: "Eco-Arquitectura e Interiorismo",
+                tier: "Platinum",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=100&q=80",
+                desc: "Estudio líder en el desarrollo de proyectos residenciales y comerciales con criterios bioclimáticos. Optimizamos recursos energéticos y logramos diseños icónicos que fusionan la modernidad con la cultura maya local.",
+                location: "Norte de Mérida",
+                whatsapp: "529991234567",
+                msg: "Hola Sofía, vi tu perfil en el Directorio de CANACO y me interesa un proyecto.",
+                socials: { facebook: "#", instagram: "#", linkedin: "#" }
+            },
+            {
+                id: 2,
+                compName: "Constructora Industrial del Mayab",
+                founder: "Ing. Alejandro Zapata",
+                sector: "Consultoría",
+                subsector: "Infraestructura & Obra Civil",
+                tier: "Platinum",
+                womenLed: false,
+                logo: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=100&q=80",
+                desc: "Más de 20 años de experiencia desarrollando parques industriales, naves de alta especificación y pavimentación pesada en la península de Yucatán.",
+                location: "Ciudad Industrial, Mérida",
+                whatsapp: "529991234568",
+                msg: "Estimado Ing. Alejandro, vi su tarjeta en el Directorio CANACO, solicito cotización.",
+                socials: { web: "#", linkedin: "#" }
+            },
+            {
+                id: 3,
+                compName: "Hanal Gourmet",
+                founder: "Mariana Novelo",
+                sector: "Gastronomía",
+                subsector: "Catering y Banquetes de Alta Gama",
+                tier: "Gold",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&w=100&q=80",
+                desc: "Ofrecemos experiencias culinarias inolvidables para eventos corporativos y privados. Rescatamos los sabores más puros de Yucatán con técnicas francesas contemporáneas de vanguardia.",
+                location: "Centro, Mérida",
+                whatsapp: "529991234569",
+                msg: "Hola Mariana, me gustaría cotizar un servicio de catering empresarial.",
+                socials: { instagram: "#", facebook: "#" }
+            },
+            {
+                id: 4,
+                compName: "Tecnologías de Software Mérida",
+                founder: "Ing. Carlos Mendoza",
+                sector: "Tecnología",
+                subsector: "Sistemas ERP & Ciberseguridad",
+                tier: "Gold",
+                womenLed: false,
+                logo: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=100&q=80",
+                desc: "Consultoría e implantación de sistemas ERP, ciberseguridad avanzada y blindaje de redes para corporativos locales e internacionales.",
+                location: "Fracc. Montejo, Mérida",
+                whatsapp: "529991234570",
+                msg: "Hola Carlos, queremos agendar un diagnóstico de ciberseguridad.",
+                socials: { web: "#", linkedin: "#" }
+            },
+            {
+                id: 5,
+                compName: "Mid Digital Agency",
+                founder: "Regina Alcocer",
+                sector: "Tecnología",
+                subsector: "Transformación Digital e Inteligencia Artificial",
+                tier: "Gold",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=100&q=80",
+                desc: "Soluciones de transformación digital a la medida. Automatizamos tus procesos de ventas a través de integraciones ERP de Odoo, diseño de páginas web corporativas de alta velocidad y embudos automatizados.",
+                location: "Altabrisa, Mérida",
+                whatsapp: "529991234571",
+                msg: "Hola Regina, queremos digitalizar nuestro negocio. Vi tu contacto en CANACO.",
+                socials: { linkedin: "#", instagram: "#" }
+            },
+            {
+                id: 6,
+                compName: "Kinich Spa Holístico",
+                founder: "Karla Rosado",
+                sector: "Salud",
+                subsector: "Bienestar Corporativo y Masoterapia",
+                tier: "Silver",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=100&q=80",
+                desc: "Espacio de desconexión y sanación física en el corazón de Mérida. Especializados en masajes descontracturantes, tratamientos de spa holísticos para reducir el estrés laboral y programas corporativos de bienestar.",
+                location: "García Ginerés, Mérida",
+                whatsapp: "529991234572",
+                msg: "Hola Karla, me interesa conocer los paquetes de bienestar corporativo.",
+                socials: { facebook: "#", instagram: "#" }
+            },
+            {
+                id: 7,
+                compName: "Ferretera San Sebastián",
+                founder: "Roberto Cantón",
+                sector: "Comercio",
+                subsector: "Distribuidor Mayorista de Materiales",
+                tier: "Silver",
+                womenLed: false,
+                logo: "https://images.unsplash.com/photo-1530124560072-a059b014b411?auto=format&fit=crop&w=100&q=80",
+                desc: "Surtido amplio de herrajes, aceros, cementos y acabados de construcción para desarrolladores inmobiliarios en todo Yucatán.",
+                location: "San Sebastián, Mérida",
+                whatsapp: "529991234573",
+                msg: "Hola Don Roberto, solicito catálogo de herrajes de importación.",
+                socials: { facebook: "#" }
+            },
+            {
+                id: 8,
+                compName: "Bloom Boutique",
+                founder: "Valentina Osorio",
+                sector: "Comercio",
+                subsector: "Moda Femenina y Sustentable",
+                tier: "Silver",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=100&q=80",
+                desc: "Concept store enfocado en prendas de alta calidad confeccionadas éticamente por artesanas de Yucatán. Diseños frescos, contemporáneos y amigables con el medio ambiente para la mujer ejecutiva moderna.",
+                location: "Paseo de Montejo, Mérida",
+                whatsapp: "529991234574",
+                msg: "Hola Valentina, me interesa ver tu catálogo de vestidos de lino.",
+                socials: { instagram: "#" }
+            },
+            {
+                id: 9,
+                compName: "Consultores y Abogados de Yucatán",
+                founder: "Lic. Manuel Ortiz",
+                sector: "Consultoría",
+                subsector: "Derecho Corporativo & Fiscal",
+                tier: "Standard",
+                womenLed: false,
+                logo: "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=100&q=80",
+                desc: "Asesoría legal, auditorías de impuestos, estructuración de contratos y fusiones de empresas comerciales.",
+                location: "Colonia México, Mérida",
+                whatsapp: "529991234575",
+                msg: "Estimado Lic. Manuel, vi su despacho en el Directorio CANACO, requiero cita fiscal.",
+                socials: { linkedin: "#" }
+            },
+            {
+                id: 10,
+                compName: "Luum Biocombustibles",
+                founder: "Dra. Elena Oxté",
+                sector: "Tecnología",
+                subsector: "Energías Renovables y Biomasa",
+                tier: "Gold",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=100&q=80",
+                desc: "Desarrollo de tecnologías limpias, biocombustibles derivados de desechos orgánicos y consultorías de transición energética industrial en el sureste mexicano.",
+                location: "Sisal, Yucatán",
+                whatsapp: "529991234576",
+                msg: "Hola Dra. Elena, me interesa una cotización de auditoría ambiental para mi planta.",
+                socials: { web: "#", linkedin: "#" }
+            },
+            {
+                id: 11,
+                compName: "Sabor Ancestral Mérida",
+                founder: "Chef Patricia Chan",
+                sector: "Gastronomía",
+                subsector: "Alta Cocina Tradicional Maya",
+                tier: "Platinum",
+                womenLed: true,
+                logo: "https://images.unsplash.com/photo-1541832676-9b763b0239ab?auto=format&fit=crop&w=100&q=80",
+                desc: "Restaurante y banquetes boutique que rescatan técnicas ancestrales mayas con un toque contemporáneo premium. Pib, asado de venado e ingredientes orgánicos de huertos locales.",
+                location: "Centro Histórico, Mérida",
+                whatsapp: "529991234577",
+                msg: "Hola Chef Patricia, me gustaría cotizar una mesa para un grupo de inversionistas extranjeros.",
+                socials: { instagram: "#", facebook: "#" }
+            }
+        ];
+
+        let currentMode = 'general';
+        let selectedCategory = 'all';
+        let customLogoBase64 = null;
+
+        // --- STREAMING_CHUNK:Implementing dynamic brand switching logic... ---
+        // --- CONMUTADOR DE MODOS DINÁMICOS (INTERRUPTOR MAESTRO) ---
+        function setDirectorioMode(mode) {
+            currentMode = mode;
+            const mainBody = document.getElementById('mainBody');
+            
+            const btnGen = document.getElementById('modeBtnGeneral');
+            const btnMuj = document.getElementById('modeBtnMujeres');
+            const mobBtnGen = document.getElementById('mobModeBtnGen');
+            const mobBtnMuj = document.getElementById('mobModeBtnMuj');
+
+            const navLogoContainer = document.getElementById('navLogoContainer');
+            const navLogoIcon = document.getElementById('navLogoIcon');
+            const navTitle = document.getElementById('navTitle');
+            const navSubtitle = document.getElementById('navSubtitle');
+            const navRegisterBtn = document.getElementById('navRegisterBtn');
+
+            const heroTitlePrefix = document.getElementById('heroTitlePrefix');
+            const heroTitleAccent = document.getElementById('heroTitleAccent');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const heroBadgeText = document.getElementById('heroBadgeText');
+
+            const iaSectionTitle = document.getElementById('iaSectionTitle');
+            const chatTitle = document.getElementById('chatTitle');
+            const chatIconContainer = document.getElementById('chatIconContainer');
+            const chatWelcomeMsg = document.getElementById('chatWelcomeMsg');
+            const directoryTitle = document.getElementById('directoryTitle');
+            const directoryDesc = document.getElementById('directoryDesc');
+            const sponsorshipBox = document.getElementById('sponsorshipBox');
+
+            if (mode === 'general') {
+                // MODO CANACO GENERAL (AZUL)
+                mainBody.classList.remove('theme-comite-mujeres');
+                document.documentElement.style.setProperty('--theme-brand-500', '#1e3a8a');
+                document.documentElement.style.setProperty('--theme-brand-600', '#1d4ed8');
+                document.documentElement.style.setProperty('--theme-brand-glow', 'rgba(30, 58, 138, 0.08)');
+                document.documentElement.style.setProperty('--theme-brand-badge-bg', '#dbeafe');
+                document.documentElement.style.setProperty('--theme-brand-badge-text', '#1e3a8a');
+                document.documentElement.style.setProperty('--theme-accent-gradient', 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)');
+
+                btnGen.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-md";
+                btnMuj.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+                mobBtnGen.className = "py-2.5 rounded-lg text-xs font-bold text-center bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-sm";
+                mobBtnMuj.className = "py-2.5 rounded-lg text-xs font-bold text-center text-slate-500 dark:text-slate-400";
+
+                navLogoContainer.className = "flex items-center justify-center w-12 h-12 rounded-xl text-white shadow-lg dynamic-gradient theme-transition";
+                navLogoIcon.className = "fa-solid fa-building text-xl";
+                navTitle.textContent = "CANACO SERVYTUR";
+                navSubtitle.textContent = "Directorio Oficial";
+                navRegisterBtn.innerHTML = `<span>Afiliarse a CANACO</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>`;
+
+                heroTitlePrefix.textContent = "Directorio de Negocios y";
+                heroTitleAccent.textContent = "Networking Inteligente";
+                heroTitleAccent.className = "bg-gradient-to-r from-indigo-600 via-indigo-500 to-sky-600 bg-clip-text text-transparent font-extrabold";
+                heroSubtitle.textContent = "Busca, conecta e intercambia valor con las empresas, industrias y líderes comerciales más importantes y certificadas de Mérida.";
+                heroBadgeText.textContent = "Ecosistema de Vinculación y Negocios en Yucatán";
+
+                iaSectionTitle.textContent = "Matchmaker de Negocios Inteligente";
+                chatTitle.textContent = "Vinculación Comercial CANACO";
+                chatIconContainer.className = "w-10 h-10 rounded-xl dynamic-gradient flex items-center justify-center text-white shadow-lg shadow-indigo-500/10";
+                chatWelcomeMsg.innerHTML = "¡Hola! Soy tu <strong>Asistente Matchmaker</strong>. Escribe qué tipo de alianza, giro comercial o negocio estás buscando en Mérida y te vincularé con el socio idóneo.";
+
+                directoryTitle.textContent = "Directorio Comercial General";
+                directoryDesc.textContent = "Encuentra y conecta con las empresas de mayor prestigio y confianza en Yucatán.";
+                sponsorshipBox.className = "bg-gradient-to-tr from-indigo-950 to-indigo-700 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden mt-16 max-w-4xl mx-auto theme-transition";
+
+            } else {
+                // MODO COMITÉ DE MUJERES (ROSA)
+                mainBody.classList.add('theme-comite-mujeres');
+                document.documentElement.style.setProperty('--theme-brand-500', '#ec4899');
+                document.documentElement.style.setProperty('--theme-brand-600', '#db2777');
+                document.documentElement.style.setProperty('--theme-brand-glow', 'rgba(236, 72, 153, 0.08)');
+                document.documentElement.style.setProperty('--theme-brand-badge-bg', '#fce7f3');
+                document.documentElement.style.setProperty('--theme-brand-badge-text', '#be185d');
+                document.documentElement.style.setProperty('--theme-accent-gradient', 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)');
+
+                btnGen.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200";
+                btnMuj.className = "px-5 py-2.5 rounded-xl text-xs font-bold transition-all duration-300 flex items-center gap-2 bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-md";
+                mobBtnGen.className = "py-2.5 rounded-lg text-xs font-bold text-center text-slate-500 dark:text-slate-400";
+                mobBtnMuj.className = "py-2.5 rounded-lg text-xs font-bold text-center bg-white dark:bg-slate-800 text-indigo-950 dark:text-white shadow-sm";
+
+                navLogoContainer.className = "flex items-center justify-center w-12 h-12 rounded-xl text-white shadow-lg dynamic-gradient theme-transition";
+                navLogoIcon.className = "fa-solid fa-venus text-xl";
+                navTitle.textContent = "COMITÉ DE MUJERES";
+                navSubtitle.textContent = "Sección Especializada";
+                navRegisterBtn.innerHTML = `<span>Únete al Comité 🌸</span> <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>`;
+
+                heroTitlePrefix.textContent = "Liderazgo Digital e";
+                heroTitleAccent.textContent = "Intercambio Comercial";
+                heroTitleAccent.className = "bg-gradient-to-r from-pink-500 via-rose-500 to-violet-600 bg-clip-text text-transparent font-extrabold";
+                heroSubtitle.textContent = "Descubre y enlaza con los emprendimientos y corporativos liderados por empresarias y líderes de alto nivel en Mérida.";
+                heroBadgeText.textContent = "Fomentando el crecimiento y networking de la empresaria local";
+
+                iaSectionTitle.textContent = "Matchmaker de Mujeres Empresarias";
+                chatTitle.textContent = "Vinculación del Comité de Mujeres";
+                chatIconContainer.className = "w-10 h-10 rounded-xl dynamic-gradient flex items-center justify-center text-white shadow-lg shadow-pink-500/10";
+                chatWelcomeMsg.innerHTML = "¡Hola! Soy tu <strong>Matchmaker del Comité de Mujeres</strong>. Escribe aquí qué tipo de alianza, proveedora o servicio local requieres en Mérida, y encontraré de forma prioritaria a las empresarias de nuestro comité.";
+
+                directoryTitle.textContent = "Comité de Mujeres Empresarias";
+                directoryDesc.textContent = "Negocios certificados y liderados por socias activas de la cámara.";
+                sponsorshipBox.className = "bg-gradient-to-tr from-brand-600 to-indigo-600 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden mt-16 max-w-4xl mx-auto theme-transition";
+            }
+
+            filterDirectory();
+        }
+
+        // --- STREAMING_CHUNK:Rendering visual business directory grids... ---
+        // --- RENDERIZAR LAS TARJETAS 3D DINÁMICAMENTE ---
+        function renderDirectoryCards(data) {
+            const grid = document.getElementById('cardsGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            if (data.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            data.forEach((afiliada) => {
+                let borderStyle = "border-slate-200/60 dark:border-slate-800/80";
+                let badgeClass = "bg-slate-100 dark:bg-slate-800 text-slate-500";
+                let isPlatinum = false;
+
+                if (afiliada.tier === 'Platinum') {
+                    borderStyle = "hologram-border p-[1.5px]";
+                    badgeClass = "bg-indigo-600 dark:bg-indigo-500 text-white font-bold";
+                    isPlatinum = true;
+                } else if (afiliada.tier === 'Gold') {
+                    borderStyle = "border-amber-400 dark:border-amber-500/80 shadow-amber-500/5";
+                    badgeClass = "bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 font-bold";
+                } else if (afiliada.tier === 'Silver') {
+                    borderStyle = "border-slate-300 dark:border-slate-700";
+                    badgeClass = "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold";
+                }
+
+                const cardHTML = `
+                    <div class="business-card-container cursor-pointer" onclick="openProfileDrawer(${afiliada.id})">
+                        <div class="business-card relative overflow-hidden h-full rounded-2xl bg-white dark:bg-slate-900 border ${isPlatinum ? '' : borderStyle} p-6 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between group">
+                            
+                            ${isPlatinum ? `<div class="absolute inset-[1.5px] rounded-[14px] bg-white dark:bg-slate-900 p-6 flex flex-col justify-between -z-0"></div>` : ''}
+
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 dark:bg-indigo-500/10 rounded-full blur-2xl pointer-events-none -z-10"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">${afiliada.sector}</span>
+                                    <div class="flex gap-1.5 items-center">
+                                        ${afiliada.womenLed ? `<span class="inline-flex items-center gap-0.5 bg-pink-50 dark:bg-pink-950/40 text-pink-500 dark:text-pink-400 font-bold text-[9px] px-1.5 py-0.5 rounded-full border border-pink-200/10" title="Socia del Comité de Mujeres"><i class="fa-solid fa-venus"></i> Comité</span>` : ''}
+                                        ${afiliada.tier !== 'Standard' ? `<span class="text-[8px] px-1.5 py-0.5 rounded-full ${badgeClass} uppercase tracking-wider">${afiliada.tier}</span>` : ''}
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start gap-4">
+                                    <div class="w-14 h-14 rounded-xl bg-slate-50 dark:bg-slate-800 p-1 border border-slate-100 dark:border-slate-700/80 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                        <img src="${afiliada.logo}" alt="Logotipo" class="w-full h-full object-contain" onerror="this.src='https://placehold.co/100x100/1e3a8a/ffffff?text=CANACO'">
+                                    </div>
+                                    <div>
+                                        <h3 class="text-base font-extrabold text-slate-900 dark:text-white group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors line-clamp-1">${afiliada.compName}</h3>
+                                        <span class="text-xs text-slate-400 dark:text-slate-500 line-clamp-1">${afiliada.subsector}</span>
+                                    </div>
+                                </div>
+
+                                <p class="mt-4 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">${afiliada.desc}</p>
+                            </div>
+
+                            <div class="relative z-10 pt-4 border-t border-slate-100 dark:border-slate-800/80 mt-6 flex items-center justify-between">
+                                <div>
+                                    <span class="text-[8px] text-slate-400 block uppercase tracking-wider">Director (a) / Fundador (a)</span>
+                                    <span class="text-xs font-semibold text-slate-700 dark:text-slate-300">${afiliada.founder}</span>
+                                </div>
+
+                                <div class="flex gap-2">
+                                    <a href="https://wa.me/${afiliada.whatsapp}?text=${encodeURIComponent(afiliada.msg)}" target="_blank" onclick="event.stopPropagation();" class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center text-sm" aria-label="Enviar WhatsApp">
+                                        <i class="fa-brands fa-whatsapp"></i>
+                                    </a>
+                                    <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xs">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHTML);
+            });
+
+            setupTiltEffect();
+        }
+
+        // --- STREAMING_CHUNK:Preparing real-time search logic... ---
+        function selectCategory(category) {
+            selectedCategory = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.remove('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
+                    btn.classList.add('dynamic-bg-brand', 'text-white');
+                } else {
+                    btn.classList.remove('dynamic-bg-brand', 'text-white');
+                    btn.classList.add('bg-white', 'dark:bg-slate-900', 'text-slate-600', 'dark:text-slate-300');
+                }
+            });
+            filterDirectory();
+        }
+
+        function filterDirectory() {
+            const query = document.getElementById('directorySearchInput').value.toLowerCase();
+            const filtered = sociosCanaco.filter(item => {
+                const matchesMode = (currentMode === 'general') || (currentMode === 'mujeres' && item.womenLed === true);
+                const matchesCategory = (selectedCategory === 'all') || (item.sector === selectedCategory);
+                const matchesQuery = item.compName.toLowerCase().includes(query) || 
+                                     item.founder.toLowerCase().includes(query) || 
+                                     item.desc.toLowerCase().includes(query) || 
+                                     item.subsector.toLowerCase().includes(query);
+                return matchesMode && matchesCategory && matchesQuery;
+            });
+            renderDirectoryCards(filtered);
+        }
+
+        function syncAndSearch(val) {
+            document.getElementById('directorySearchInput').value = val;
+            filterDirectory();
+        }
+
+        // --- STREAMING_CHUNK:Activating 3D Hover engine... ---
+        function setupTiltEffect() {
+            const containers = document.querySelectorAll('.business-card-container');
+            containers.forEach(container => {
+                const card = container.querySelector('.business-card');
+                if (!card) return;
+                
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((centerY - y) / centerY) * 10;
+                    const rotateY = ((x - centerX) / centerX) * 10;
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                });
+                
+                container.addEventListener('mouseleave', () => {
+                    card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                });
+
+                container.addEventListener('touchstart', () => {
+                    card.style.transform = `scale3d(1.02, 1.02, 1.02)`;
+                }, { passive: true });
+                container.addEventListener('touchend', () => {
+                    card.style.transform = `rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                }, { passive: true });
+            });
+        }
+
+        // --- STREAMING_CHUNK:Defining drawer side-panel logic... ---
+        function openProfileDrawer(id) {
+            const afiliada = sociosCanaco.find(item => item.id === id);
+            if (!afiliada) return;
+
+            document.getElementById('drawerLogo').src = afiliada.logo;
+            document.getElementById('drawerCompName').textContent = afiliada.compName;
+            document.getElementById('drawerSector').textContent = afiliada.sector + ' | ' + afiliada.subsector;
+            document.getElementById('drawerDesc').textContent = afiliada.desc;
+            document.getElementById('drawerFounder').textContent = afiliada.founder;
+            document.getElementById('drawerLocation').textContent = afiliada.location;
+
+            const wBadge = document.getElementById('drawerWomenBadge');
+            if (afiliada.womenLed) wBadge.classList.remove('hidden');
+            else wBadge.classList.add('hidden');
+
+            const badge = document.getElementById('drawerBadge');
+            badge.textContent = afiliada.tier;
+            if (afiliada.tier === 'Platinum') {
+                badge.className = "absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white bg-gradient-to-r from-indigo-500 to-pink-500 shadow-md";
+            } else {
+                badge.className = "absolute top-4 left-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-800 bg-white/90 backdrop-blur-md";
+            }
+
+            const waUrl = `https://wa.me/${afiliada.whatsapp}?text=${encodeURIComponent(afiliada.msg)}`;
+            document.getElementById('drawerWhatsAppBtn').href = waUrl;
+
+            const socialsCont = document.getElementById('drawerSocials');
+            socialsCont.innerHTML = '';
+            Object.keys(afiliada.socials || {}).forEach(key => {
+                let iconClass = `fa-brands fa-${key}`;
+                if (key === 'web') iconClass = 'fa-solid fa-globe';
+                const btn = `<a href="${afiliada.socials[key]}" target="_blank" class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-pink-500 hover:text-white text-slate-600 dark:text-slate-300 flex items-center justify-center text-lg transition-all"><i class="${iconClass}"></i></a>`;
+                socialsCont.insertAdjacentHTML('beforeend', btn);
+            });
+
+            document.getElementById('profileDrawer').classList.remove('pointer-events-none');
+            document.getElementById('drawerPanel').classList.remove('translate-x-full');
+            document.getElementById('drawerBackdrop').classList.add('opacity-100', 'pointer-events-auto');
+        }
+
+        function closeProfileDrawer() {
+            document.getElementById('profileDrawer').classList.add('pointer-events-none');
+            document.getElementById('drawerPanel').classList.add('translate-x-full');
+            document.getElementById('drawerBackdrop').classList.remove('opacity-100', 'pointer-events-auto');
+        }
+
+        // --- STREAMING_CHUNK:Live Interactive Card Simulator Logic... ---
+        function updateSimulatedCard() {
+            const name = document.getElementById('simName').value || "Nombre de tu Empresa";
+            const founder = document.getElementById('simFounder').value || "Nombre del Fundador";
+            const sector = document.getElementById('simSector').value;
+            const isWomen = document.getElementById('simIsWomenLed').checked;
+            const desc = document.getElementById('simDesc').value || "Escribe tus servicios...";
+
+            document.getElementById('simCardName').textContent = name;
+            document.getElementById('simCardFounder').textContent = founder;
+            document.getElementById('simCardSector').textContent = sector;
+            document.getElementById('simCardDesc').textContent = desc;
+
+            const wBadge = document.getElementById('simCardWomenBadge');
+            if (isWomen) wBadge.classList.remove('hidden');
+            else wBadge.classList.add('hidden');
+
+            const fallbackIcon = document.getElementById('simCardFallbackIcon');
+            fallbackIcon.className = "fa-solid text-slate-400 dark:text-slate-500 text-lg ";
+            if (sector === 'Consultoría') fallbackIcon.classList.add('fa-signature');
+            if (sector === 'Tecnología') fallbackIcon.classList.add('fa-code');
+            if (sector === 'Comercio') fallbackIcon.classList.add('fa-store');
+            if (sector === 'Salud') fallbackIcon.classList.add('fa-heart-pulse');
+            if (sector === 'Gastronomía') fallbackIcon.classList.add('fa-utensils');
+        }
+
+        function generateMockLogo() {
+            const canvas = document.createElement('canvas');
+            canvas.width = 100;
+            canvas.height = 100;
+            const ctx = canvas.getContext('2d');
+            
+            const grad = ctx.createLinearGradient(0, 0, 100, 100);
+            grad.addColorStop(0, '#ec4899');
+            grad.addColorStop(1, '#3b82f6');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 100, 100);
+
+            ctx.font = 'bold 36px Inter';
+            ctx.fillStyle = '#ffffff';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            
+            const name = document.getElementById('simName').value || "IA";
+            const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            ctx.fillText(initials, 50, 50);
+
+            const dataUrl = canvas.toDataURL();
+            const logoImg = document.getElementById('simCardLogo');
+            const fallbackIcon = document.getElementById('simCardFallbackIcon');
+
+            logoImg.src = dataUrl;
+            logoImg.classList.remove('hidden');
+            fallbackIcon.classList.add('hidden');
+            customLogoBase64 = dataUrl;
+            showSnackbar("🎨 Logotipo generado con canvas exitosamente.", "fa-circle-check", "text-emerald-400");
+        }
+
+        function optimizeMockPitch(event) {
+            const textarea = document.getElementById('simDesc');
+            const originalBtnText = event.currentTarget.innerHTML;
+            event.currentTarget.disabled = true;
+            event.currentTarget.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Pulido...`;
+
+            // Simulador local instantáneo etiquetado como "Gemini"
+            setTimeout(() => {
+                textarea.value = "Expertos corporativos de Mérida. Ofrecemos soluciones integrales premium, respaldadas por certificaciones oficiales y facturación electrónica, garantizando la excelencia en cada proyecto en Yucatán.";
+                updateSimulatedCard();
+                showSnackbar("✨ Pitch optimizado magistralmente con Gemini 3.1.", "fa-wand-magic-sparkles", "text-indigo-400");
+                const btn = document.querySelector("button[onclick^='optimizeMockPitch']");
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalBtnText;
+                }
+            }, 1200);
+        }
+
+        function saveSimulatedCard() {
+            const name = document.getElementById('simName').value;
+            const founder = document.getElementById('simFounder').value;
+            const sector = document.getElementById('simSector').value;
+            const isWomen = document.getElementById('simIsWomenLed').checked;
+            const desc = document.getElementById('simDesc').value;
+            const logoImg = document.getElementById('simCardLogo').src;
+
+            const nuevaSocia = {
+                id: sociosCanaco.length + 1,
+                compName: name,
+                founder: founder,
+                sector: sector,
+                subsector: "Nueva Socia Certificada",
+                tier: "Standard",
+                womenLed: isWomen,
+                logo: logoImg.startsWith('data:') ? logoImg : "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=100&q=80",
+                desc: desc,
+                location: "Mérida, Yucatán",
+                whatsapp: "529990000000",
+                msg: "Hola, vi tu tarjeta nueva en el directorio.",
+                socials: { web: "#" }
+            };
+
+            sociosCanaco.unshift(nuevaSocia);
+            filterDirectory();
+            showSnackbar("🚀 ¡Tu tarjeta ha sido inyectada dinámicamente al inicio del directorio!", "fa-circle-check", "text-emerald-400");
+            document.getElementById('directorio').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- STREAMING_CHUNK:Fully Simulated Gemini 3.1 Matchmaker... ---
+        // --- ASISTENTE DE ENLACE IA "GEMINI 3.1" (MOTOR LOCAL) ---
+        function sendMatchmakerRequest() {
+            const inputField = document.getElementById('aiQueryInput');
+            const query = inputField.value.trim();
+            if (!query) return;
+
+            const aiSendBtn = document.getElementById('aiSendBtn');
+            const chatContainer = document.getElementById('chatHistoryContainer');
+
+            inputField.disabled = true;
+            aiSendBtn.disabled = true;
+            aiSendBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Buscando...</span>`;
+
+            const userMsg = `
+                <div class="flex items-start gap-3 justify-end">
+                    <div class="bg-indigo-600 dark:bg-indigo-500 text-white p-4 rounded-2xl rounded-tr-none max-w-[85%] text-sm shadow-md">
+                        <p>${escapeHtml(query)}</p>
+                    </div>
+                </div>
+            `;
+            chatContainer.insertAdjacentHTML('beforeend', userMsg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            inputField.value = '';
+
+            const loaderId = 'loader-' + Date.now();
+            const loaderHtml = `
+                <div class="flex items-start gap-3" id="${loaderId}">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-500 flex-shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot text-sm animate-pulse"></i>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl rounded-tl-none max-w-[85%] flex items-center gap-2 shadow-inner">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style="animation-delay:0.1s"></span>
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style="animation-delay:0.2s"></span>
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style="animation-delay:0.3s"></span>
+                    </div>
+                </div>
+            `;
+            chatContainer.insertAdjacentHTML('beforeend', loaderHtml);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Respuesta garantizada usando motor de simulación local
+            setTimeout(() => {
+                const loader = document.getElementById(loaderId);
+                if (loader) loader.remove();
+                let responseHTML = getLocalMatchmakerResponse(query);
+                appendBotMessage(responseHTML);
+                enableChatControls();
+            }, 1800);
+        }
+
+        // --- ALGORITMO LOCAL DE MATCHMAKER COMERCIAL DE GEMINI 3.1 ---
+        function getLocalMatchmakerResponse(query) {
+            let matches = [];
+            const searchLower = query.toLowerCase();
+
+            const activePool = sociosCanaco.filter(s => currentMode === 'general' || (currentMode === 'mujeres' && s.womenLed));
+
+            if (searchLower.includes('banquete') || searchLower.includes('comida') || searchLower.includes('gourmet') || searchLower.includes('catering') || searchLower.includes('comisaria') || searchLower.includes('alimento') || searchLower.includes('restaurante') || searchLower.includes('platillo')) {
+                matches = activePool.filter(s => s.sector === 'Gastronomía');
+            } else if (searchLower.includes('arquitect') || searchLower.includes('diseño') || searchLower.includes('construc') || searchLower.includes('obra') || searchLower.includes('ingenier') || searchLower.includes('interiorismo')) {
+                matches = activePool.filter(s => s.sector === 'Consultoría' && (s.compName.includes('Arquitectura') || s.compName.includes('Constructora')));
+            } else if (searchLower.includes('legal') || searchLower.includes('abogad') || searchLower.includes('fiscal') || searchLower.includes('ley') || searchLower.includes('impuestos') || searchLower.includes('auditor')) {
+                matches = activePool.filter(s => s.sector === 'Consultoría' && s.compName.includes('Abogados'));
+            } else if (searchLower.includes('web') || searchLower.includes('software') || searchLower.includes('digital') || searchLower.includes('sistemas') || searchLower.includes('ia') || searchLower.includes('tecnolog') || searchLower.includes('erp') || searchLower.includes('ciberseguridad')) {
+                matches = activePool.filter(s => s.sector === 'Tecnología');
+            } else if (searchLower.includes('spa') || searchLower.includes('masaje') || searchLower.includes('salud') || searchLower.includes('bienestar') || searchLower.includes('relaj') || searchLower.includes('estrés')) {
+                matches = activePool.filter(s => s.sector === 'Salud');
+            } else if (searchLower.includes('ferreter') || searchLower.includes('herraje') || searchLower.includes('construccion') || searchLower.includes('material')) {
+                matches = activePool.filter(s => s.sector === 'Comercio' && s.compName.includes('Ferretera'));
+            } else if (searchLower.includes('ropa') || searchLower.includes('boutique') || searchLower.includes('moda') || searchLower.includes('vestid') || searchLower.includes('prendas') || searchLower.includes('artesanas')) {
+                matches = activePool.filter(s => s.sector === 'Comercio' && s.compName.includes('Bloom'));
+            } else {
+                matches = activePool.slice(0, 2); // Selección recomendada base
+            }
+
+            let html = "";
+            if (matches.length > 0) {
+                html = `<p class='mb-2'>Hola, soy <strong>Gemini 3.1</strong>. He analizado nuestro directorio oficial y encontré los siguientes perfiles certificados para ti:</p><ul class='space-y-3 mt-2'>`;
+                matches.forEach(m => {
+                    html += `
+                        <li class='border-b border-slate-200/50 dark:border-slate-800 pb-2.5 last:border-0'>
+                            <strong class='text-indigo-600 dark:text-indigo-400'>${m.compName}</strong> (${m.subsector})<br>
+                            <span class='text-xs text-slate-400'>Liderado por: ${m.founder} | Ubicación: ${m.location}</span><br>
+                            <p class='text-[11px] mt-1 italic text-slate-500 dark:text-slate-400'>"${m.desc}"</p>
+                            <a href="https://wa.me/${m.whatsapp}?text=${encodeURIComponent(m.msg)}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-500 hover:underline mt-1.5">
+                                <i class="fa-brands fa-whatsapp"></i> Chatear por WhatsApp Directo
+                            </a>
+                        </li>
+                    `;
+                });
+                html += "</ul>";
+            } else {
+                html = `<p>Hola, soy <strong>Gemini 3.1</strong>. No logré encontrar un negocio certificado exacto en la base de datos actual para tu requerimiento. Sin embargo, te sugiero unirte a la cámara o contactar a nuestra mesa directiva para una vinculación de alta prioridad.</p>`;
+            }
+            return html;
+        }
+
+        // --- STREAMING_CHUNK:Providing final helper functions and initializations... ---
+        function appendBotMessage(html) {
+            const chatContainer = document.getElementById('chatHistoryContainer');
+            const aiMsg = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-500 flex-shrink-0 mt-0.5">
+                        <i class="fa-solid fa-robot text-sm"></i>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl rounded-tl-none max-w-[85%] text-xs leading-relaxed text-slate-700 dark:text-slate-300 shadow-md">
+                        ${html}
+                    </div>
+                </div>
+            `;
+            chatContainer.insertAdjacentHTML('beforeend', aiMsg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function enableChatControls() {
+            const inputField = document.getElementById('aiQueryInput');
+            const aiSendBtn = document.getElementById('aiSendBtn');
+            inputField.disabled = false;
+            aiSendBtn.disabled = false;
+            aiSendBtn.innerHTML = `<span>Buscar</span><i class="fa-solid fa-paper-plane text-xs"></i>`;
+            inputField.focus();
+        }
+
+        function showSnackbar(message, iconClass = "fa-circle-check", iconColor = "text-emerald-400") {
+            const snack = document.getElementById('snackbar');
+            const icon = document.getElementById('snackbarIcon');
+            document.getElementById('snackbarText').textContent = message;
+            
+            icon.className = `fa-solid ${iconClass} ${iconColor}`;
+
+            snack.classList.remove('opacity-0', 'scale-90', 'pointer-events-none');
+            snack.classList.add('opacity-100', 'scale-100', 'pointer-events-auto');
+
+            setTimeout(() => {
+                snack.classList.add('opacity-0', 'scale-90', 'pointer-events-none');
+                snack.classList.remove('opacity-100', 'scale-100', 'pointer-events-auto');
+            }, 4500);
+        }
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeToggleIcon');
+
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                icon.className = "fa-solid fa-moon";
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                icon.className = "fa-solid fa-sun";
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function detectSystemTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const icon = document.getElementById('themeToggleIcon');
+            
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                icon.className = "fa-solid fa-sun";
+            } else {
+                document.documentElement.classList.remove('dark');
+                icon.className = "fa-solid fa-moon";
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('mobileMenuIcon');
+
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.className = "fa-solid fa-xmark text-lg";
+            } else {
+                menu.classList.add('hidden');
+                icon.className = "fa-solid fa-bars text-lg";
+            }
+        }
+
+        function escapeHtml(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        window.onload = function() {
+            detectSystemTheme();
+            setDirectorioMode('general'); 
+            updateSimulatedCard();
+        };
+    </script>
+</body>
+</html>
